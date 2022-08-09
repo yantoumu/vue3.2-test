@@ -8,7 +8,7 @@
     </div>
     <!-- query -->
     <div class="query-box">
-      <el-input v-model="queryInput" class="query-input" placeholder="请输入姓名搜索"/>
+      <el-input v-model="queryInput" class="query-input" placeholder="请输入姓名搜索" @input="handleQueryName"/>
       <div class="btn-list">
         <el-button type="primary" @click="handleAdd">增加</el-button>
         <el-button v-if="multipleSelection.length>0" type="danger" @click="handleDelList">删除多选</el-button>
@@ -37,7 +37,7 @@
       </el-table-column>
     </el-table>
     <!-- dialog -->
-    <el-dialog v-model="dialogFormVisible" :title="dialogType=='add'? '新增': '编辑'">
+    <el-dialog v-model="dialogFormVisible" :title="dialogType==='add'? '新增': '编辑'">
       <el-form :model="tableForm">
         <el-form-item :label-width="60" label="姓名">
           <el-input v-model="tableForm.name" autocomplete="off"/>
@@ -72,7 +72,7 @@ let queryInput = $ref("")
 let tableData = $ref([
   {
     id: "1",
-    name: 'Tom',
+    name: 'Tom1',
     email: "123@qq.com",
     state: 'California',
     phone: "13629183123",
@@ -80,7 +80,7 @@ let tableData = $ref([
   },
   {
     id: "2",
-    name: 'Tom',
+    name: 'Tom2',
     email: "123@qq.com",
     state: 'California',
     phone: "13629183123",
@@ -88,7 +88,7 @@ let tableData = $ref([
   },
   {
     id: "3",
-    name: 'Tom',
+    name: 'Tom3',
     email: "123@qq.com",
     state: 'California',
     phone: "13629183123",
@@ -96,7 +96,7 @@ let tableData = $ref([
   },
   {
     id: "4",
-    name: 'Tom',
+    name: 'Tom4',
     email: "123@qq.com",
     state: 'California',
     phone: "13629183123",
@@ -104,6 +104,7 @@ let tableData = $ref([
   },
 
 ])
+let tableDataCopy =Object.assign(tableData)
 let multipleSelection = $ref([])
 let dialogFormVisible = $ref(false)
 let tableForm = $ref({
@@ -116,6 +117,21 @@ let tableForm = $ref({
 let dialogType = $ref('add')
 
 /* 方法 */
+
+// 搜索
+
+const handleQueryName = (val) => {
+  //如果 tableData 里面存在 val 的值
+  if (val.length>0){
+    // .toLowerCase() 转换为小写
+    tableData =tableData.filter(item=>(item.name).toLowerCase().match(val.toLowerCase()))
+  }else{
+    tableData=tableDataCopy
+  }
+
+
+
+}
 
 // 编辑
 const handleEdit=(row )=>{
